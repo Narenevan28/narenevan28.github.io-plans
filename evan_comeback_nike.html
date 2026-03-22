@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MORE THAN A COMEBACK — EVAN'S PROTOCOL</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700;1,900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --black: #080808;
+  --white: #FFFFFF;
+  --red: #FA2517;
+  --gray: #1A1A1A;
+  --gray2: #2C2C2C;
+  --muted: #888;
+  --light: #F5F5F5;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Barlow', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* CUSTOM CURSOR */
+.cursor {
+  width: 10px; height: 10px;
+  background: var(--red);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.1s;
+  transform: translate(-50%, -50%);
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  border: 1px solid rgba(250,37,23,0.5);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  transition: transform 0.12s ease, width 0.2s, height 0.2s;
+  transform: translate(-50%, -50%);
+}
+
+/* NAV */
+nav {
+  position: fixed; top:0; left:0; right:0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 48px;
+  background: linear-gradient(to bottom, rgba(8,8,8,0.95), transparent);
+  backdrop-filter: blur(2px);
+}
+
+.nav-logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  color: var(--white);
+}
+.nav-logo span { color: var(--red); }
+
+.nav-links {
+  display: flex; gap: 32px; list-style: none;
+}
+.nav-links a {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--white); }
+
+/* HERO */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute; inset: 0;
+  background: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1600&q=80') center/cover no-repeat;
+  filter: brightness(0.35);
+  transform: scale(1.05);
+  animation: heroZoom 12s ease-in-out infinite alternate;
+}
+
+@keyframes heroZoom {
+  from { transform: scale(1.05); }
+  to { transform: scale(1.12); }
+}
+
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(250,37,23,0.12) 0%, transparent 50%),
+              linear-gradient(to top, rgba(8,8,8,1) 0%, rgba(8,8,8,0.4) 50%, transparent 100%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 0 48px 80px;
+  max-width: 900px;
+}
+
+.hero-tag {
+  display: inline-block;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: var(--red);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: slideUp 0.7s 0.3s forwards;
+}
+
+.hero h1 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(72px, 12vw, 160px);
+  font-weight: 900;
+  line-height: 0.88;
+  text-transform: uppercase;
+  letter-spacing: -2px;
+  opacity: 0;
+  animation: slideUp 0.8s 0.5s forwards;
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: var(--red);
+  display: block;
+}
+
+.hero-sub {
+  font-size: 16px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.65);
+  margin-top: 24px;
+  max-width: 480px;
+  line-height: 1.7;
+  opacity: 0;
+  animation: slideUp 0.7s 0.8s forwards;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 0;
+  margin-top: 48px;
+  opacity: 0;
+  animation: slideUp 0.7s 1s forwards;
+}
+
+.hstat {
+  padding: 0 32px 0 0;
+  margin-right: 32px;
+  border-right: 1px solid rgba(255,255,255,0.15);
+}
+.hstat:last-child { border-right: none; }
+.hstat .val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 42px;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1;
+}
+.hstat .val span { color: var(--red); font-size: 28px; }
+.hstat .lbl {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* SECTION COMMON */
+section { padding: 100px 48px; }
+
+.section-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: var(--red);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(48px, 6vw, 80px);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 0.92;
+  letter-spacing: -1px;
+  margin-bottom: 48px;
+}
+
+/* CALORIE SECTION */
+.calorie-section {
+  background: var(--white);
+  color: var(--black);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  padding: 0;
+}
+
+.calorie-img {
+  position: relative;
+  overflow: hidden;
+  min-height: 600px;
+}
+
+.calorie-img img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s;
+}
+.calorie-img:hover img { transform: scale(1.04); }
+
+.calorie-content {
+  padding: 80px 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.calorie-content .section-eyebrow { color: var(--red); }
+
+.calorie-content .section-title { color: var(--black); margin-bottom: 32px; }
+
+.macro-list { display: flex; flex-direction: column; gap: 20px; }
+
+.macro-item {}
+.macro-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+.macro-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--black);
+}
+.macro-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--red);
+}
+
+.bar-bg {
+  height: 4px;
+  background: #e0e0e0;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.bar-inner {
+  height: 100%;
+  background: var(--black);
+  border-radius: 2px;
+  width: 0;
+  transition: width 1.6s cubic-bezier(0.4,0,0.2,1);
+}
+.bar-inner.red { background: var(--red); }
+
+.macro-note {
+  font-size: 12px;
+  color: #777;
+  margin-top: 5px;
+}
+
+.tdee-box {
+  margin-top: 36px;
+  padding: 24px;
+  background: var(--black);
+  color: var(--white);
+  border-radius: 4px;
+}
+.tdee-box .tdee-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.tdee-box .tdee-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 40px;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1;
+}
+.tdee-box .tdee-val span { color: var(--red); }
+.tdee-box p { font-size: 13px; color: var(--muted); margin-top: 8px; line-height: 1.6; }
+
+/* DAILY SCHEDULE */
+.schedule-section { background: var(--gray); }
+
+.schedule-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2px;
+}
+
+.meal-card {
+  background: var(--black);
+  padding: 36px 32px;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s;
+}
+.meal-card:hover { background: #111; }
+
+.meal-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 0;
+  background: var(--red);
+  transition: height 0.4s;
+}
+.meal-card:hover::before { height: 100%; }
+
+.meal-time {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--red);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.meal-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+  line-height: 1;
+}
+
+.meal-body {
+  font-size: 13px;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.75;
+}
+
+.meal-body strong { color: var(--white); font-weight: 600; }
+
+.meal-kcal {
+  margin-top: 16px;
+  display: inline-block;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--muted);
+  border-top: 1px solid var(--gray2);
+  padding-top: 12px;
+  width: 100%;
+}
+.meal-kcal span { color: var(--white); }
+
+/* SUPERFOODS */
+.superfoods-section { background: var(--black); }
+
+.sf-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2px;
+}
+
+.sf-card {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1;
+  background: var(--gray);
+}
+
+.sf-card img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: brightness(0.5) saturate(0.8);
+  transition: filter 0.4s, transform 0.5s;
+  display: block;
+}
+
+.sf-card:hover img {
+  filter: brightness(0.35) saturate(1.2);
+  transform: scale(1.06);
+}
+
+.sf-overlay {
+  position: absolute; inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%);
+}
+
+.sf-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 1;
+}
+
+.sf-benefit {
+  font-size: 11px;
+  color: rgba(255,255,255,0.65);
+  margin-top: 4px;
+  line-height: 1.5;
+}
+
+.sf-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+.sf-tag {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--red);
+  border: 1px solid rgba(250,37,23,0.4);
+  padding: 2px 7px;
+  border-radius: 1px;
+}
+
+/* SUPPLEMENT STACK */
+.supp-section {
+  background: var(--red);
+  color: var(--white);
+}
+
+.supp-section .section-eyebrow { color: rgba(255,255,255,0.6); }
+.supp-section .section-title { color: var(--white); }
+
+.supp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.supp-card {
+  background: rgba(0,0,0,0.2);
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 28px 24px;
+  border-radius: 2px;
+  transition: background 0.3s;
+}
+.supp-card:hover { background: rgba(0,0,0,0.35); }
+
+.supp-number {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 56px;
+  font-weight: 900;
+  color: rgba(255,255,255,0.12);
+  line-height: 1;
+  margin-bottom: -8px;
+}
+.supp-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+.supp-dose {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,0.55);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.supp-desc {
+  font-size: 13px;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.7;
+}
+.supp-when {
+  margin-top: 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: rgba(255,255,255,0.5);
+  border-top: 1px solid rgba(255,255,255,0.15);
+  padding-top: 10px;
+  text-transform: uppercase;
+}
+.supp-when span { color: var(--white); }
+
+/* GUT HEALTH */
+.gut-section {
+  background: var(--white);
+  color: var(--black);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  padding: 0;
+}
+
+.gut-img {
+  overflow: hidden;
+  min-height: 560px;
+  order: 2;
+}
+.gut-img img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s;
+}
+.gut-img:hover img { transform: scale(1.04); }
+
+.gut-content {
+  padding: 80px 60px;
+  order: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.gut-content .section-eyebrow { color: var(--red); }
+.gut-content .section-title { color: var(--black); font-size: 56px; }
+
+.gut-list { display: flex; flex-direction: column; gap: 0; }
+
+.gut-item {
+  display: flex;
+  gap: 20px;
+  padding: 20px 0;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.gut-icon {
+  font-size: 28px;
+  flex-shrink: 0;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+.gut-item h4 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+  color: var(--black);
+}
+
+.gut-item p { font-size: 13px; color: #555; line-height: 1.65; }
+
+/* 5-DAY PLAN */
+.week-section { background: var(--black); }
+
+.week-tabs {
+  display: flex; gap: 0;
+  margin-bottom: 2px;
+  overflow-x: auto;
+}
+
+.week-tab {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 14px 28px;
+  background: var(--gray);
+  color: var(--muted);
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+.week-tab.active, .week-tab:hover {
+  background: var(--red);
+  color: var(--white);
+}
+
+.week-panels { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px; }
+
+.week-panel { display: none; }
+.week-panel.active { display: contents; }
+
+.day-meal {
+  background: var(--gray);
+  padding: 32px 28px;
+}
+
+.day-meal-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--red);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.day-meal h4 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.day-meal p {
+  font-size: 13px;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.7;
+}
+.day-meal p strong { color: var(--white); }
+
+/* SKIN + HAIR */
+.skin-section {
+  background: #0D0D0D;
+  padding: 100px 48px;
+}
+
+.skin-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  margin-top: 48px;
+}
+
+.skin-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 380px;
+}
+.skin-card img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: brightness(0.4) saturate(0.7);
+  transition: filter 0.4s, transform 0.5s;
+  position: absolute; inset: 0;
+}
+.skin-card:hover img { filter: brightness(0.25); transform: scale(1.06); }
+
+.skin-card-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  min-height: 380px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 32px 28px;
+  background: linear-gradient(to top, rgba(0,0,0,0.9) 30%, transparent 100%);
+}
+
+.skin-card-icon { font-size: 32px; margin-bottom: 10px; }
+.skin-card h3 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 28px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+.skin-card p { font-size: 12px; color: rgba(255,255,255,0.6); line-height: 1.65; }
+
+/* WARNING */
+.warning-section {
+  background: var(--gray);
+  padding: 60px 48px;
+  display: flex;
+  gap: 48px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.warning-icon {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 80px;
+  font-weight: 900;
+  color: var(--red);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.warning-content h3 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+}
+
+.warning-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.warning-list li {
+  font-size: 14px;
+  color: rgba(255,255,255,0.65);
+  padding-left: 20px;
+  position: relative;
+  line-height: 1.6;
+}
+.warning-list li::before {
+  content: '→';
+  position: absolute; left: 0;
+  color: var(--red);
+}
+
+/* FOOTER */
+footer {
+  background: var(--black);
+  border-top: 1px solid var(--gray2);
+  padding: 80px 48px 40px;
+  text-align: center;
+}
+
+.footer-logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 80px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -2px;
+  line-height: 0.9;
+  margin-bottom: 24px;
+}
+.footer-logo em { color: var(--red); font-style: italic; }
+
+footer p {
+  font-size: 13px;
+  color: var(--muted);
+  max-width: 480px;
+  margin: 0 auto 40px;
+  line-height: 1.7;
+}
+
+.footer-bottom {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #333;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-top: 40px;
+  border-top: 1px solid var(--gray2);
+  padding-top: 24px;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* SCROLL REVEAL */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  nav { padding: 16px 24px; }
+  .nav-links { display: none; }
+  section { padding: 60px 24px; }
+  .hero-content { padding: 0 24px 60px; }
+  .calorie-section, .gut-section { grid-template-columns: 1fr; }
+  .calorie-img, .gut-img { min-height: 280px; order: 1; }
+  .calorie-content, .gut-content { padding: 48px 24px; order: 2; }
+  .skin-grid { grid-template-columns: 1fr; }
+  .week-panels { grid-template-columns: 1fr; }
+  .hstat { padding: 0 16px 0 0; margin-right: 16px; }
+  .warning-section { padding: 40px 24px; flex-direction: column; gap: 16px; }
+  footer { padding: 60px 24px 32px; }
+  .footer-logo { font-size: 48px; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="curRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">EVAN <span>●</span> PROTOCOL</div>
+  <ul class="nav-links">
+    <li><a href="#macros">Macros</a></li>
+    <li><a href="#meals">Meals</a></li>
+    <li><a href="#superfoods">Superfoods</a></li>
+    <li><a href="#stack">Stack</a></li>
+    <li><a href="#week">Week Plan</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-tag">// Personal Performance Protocol · 2026</div>
+    <h1>MORE THAN A<br><em>Comeback.</em></h1>
+    <p class="hero-sub">Faster than lifters. Stronger than runners. The athlete returns — rebuilt from the inside out. Skin. Hair. Gut. Brain. Body.</p>
+    <div class="hero-stats">
+      <div class="hstat">
+        <div class="val">89<span>kg</span></div>
+        <div class="lbl">Current Weight</div>
+      </div>
+      <div class="hstat">
+        <div class="val">1900<span>kcal</span></div>
+        <div class="lbl">Daily Target</div>
+      </div>
+      <div class="hstat">
+        <div class="val">−500<span>kcal</span></div>
+        <div class="lbl">Deficit</div>
+      </div>
+      <div class="hstat">
+        <div class="val">160<span>g</span></div>
+        <div class="lbl">Protein/Day</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MACROS -->
+<div id="macros" class="calorie-section reveal">
+  <div class="calorie-img">
+    <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=80" alt="Healthy food macros" loading="lazy">
+  </div>
+  <div class="calorie-content">
+    <div class="section-eyebrow">// 01 — Calorie & Macro Targets</div>
+    <div class="section-title" style="color:var(--black)">YOUR<br>NUMBERS</div>
+    <div class="macro-list">
+      <div class="macro-item">
+        <div class="macro-header">
+          <span class="macro-name">🥩 Protein</span>
+          <span class="macro-val">160–180g / day</span>
+        </div>
+        <div class="bar-bg"><div class="bar-inner red" data-w="78"></div></div>
+        <div class="macro-note">2g/kg bodyweight — muscle retention, hair follicle support, satiety</div>
+      </div>
+      <div class="macro-item">
+        <div class="macro-header">
+          <span class="macro-name">🌾 Complex Carbs</span>
+          <span class="macro-val">160–180g / day</span>
+        </div>
+        <div class="bar-bg"><div class="bar-inner" data-w="62"></div></div>
+        <div class="macro-note">Oats, sweet potato, brown rice, lentils — sustained brain + training fuel</div>
+      </div>
+      <div class="macro-item">
+        <div class="macro-header">
+          <span class="macro-name">🥑 Healthy Fats</span>
+          <span class="macro-val">55–65g / day</span>
+        </div>
+        <div class="bar-bg"><div class="bar-inner" data-w="44"></div></div>
+        <div class="macro-note">Omega-3s, nuts, olive oil — hormones, DHT regulation, skin, brain</div>
+      </div>
+      <div class="macro-item">
+        <div class="macro-header">
+          <span class="macro-name">🌿 Fibre</span>
+          <span class="macro-val">35–40g / day</span>
+        </div>
+        <div class="bar-bg"><div class="bar-inner red" data-w="88"></div></div>
+        <div class="macro-note">Gut bacteria diversity, anti-inflammatory, satiety hormones</div>
+      </div>
+    </div>
+    <div class="tdee-box">
+      <div class="tdee-label">TDEE Estimate</div>
+      <div class="tdee-val">2,400–2,500 <span>kcal</span></div>
+      <p>At 89kg · 170cm · Age 35 · Moderately Active. Target deficit ~500 kcal → <strong style="color:white">1,900–2,000 kcal/day</strong> for fat loss while preserving muscle.</p>
+    </div>
+  </div>
+</div>
+
+<!-- MEALS -->
+<section id="meals" class="schedule-section reveal">
+  <div class="section-eyebrow">// 02 — Daily Meal Protocol</div>
+  <div class="section-title">THE<br>SCHEDULE</div>
+  <div class="schedule-grid">
+
+    <div class="meal-card">
+      <div class="meal-time">06:00 AM</div>
+      <div class="meal-title">Wake Up & Activate</div>
+      <div class="meal-body">
+        500ml warm water + juice of ½ lemon + pinch of Himalayan salt.<br>
+        <strong>Optional:</strong> 1 tsp apple cider vinegar. Primes gut acid, hydrates cells, kickstarts metabolism.
+      </div>
+      <div class="meal-kcal">HYDRATION ONLY · <span>0 kcal</span></div>
+    </div>
+
+    <div class="meal-card">
+      <div class="meal-time">06:30 AM</div>
+      <div class="meal-title">Fasted Run + Movement</div>
+      <div class="meal-body">
+        30–40 min Zone 2 cardio. Keep HR moderate — maximises fat oxidation using stored fat as fuel.<br>
+        <strong>No carbs before this</strong> — water or black coffee only.
+      </div>
+      <div class="meal-kcal">FAT BURN WINDOW · <span>Zone 2</span></div>
+    </div>
+
+    <div class="meal-card">
+      <div class="meal-time">07:30 AM</div>
+      <div class="meal-title">Power Breakfast</div>
+      <div class="meal-body">
+        <strong>50g oats</strong> + 1 tbsp chia seeds soaked overnight<br>
+        <strong>Whey Protein</strong> (ASITIS 1 scoop — 27g)<br>
+        <strong>Nuts:</strong> 5 walnuts + 6 almonds + 1 tbsp pumpkin seeds<br>
+        <strong>Add:</strong> ½ tsp turmeric + pinch black pepper + 1 tsp flaxseed powder<br>
+        <strong>Collagen Peptides:</strong> 10g stirred in — tasteless
+      </div>
+      <div class="meal-kcal">~550 kcal · <span>~42g Protein</span></div>
+    </div>
+
+    <div class="meal-card">
+      <div class="meal-time">10:00 AM</div>
+      <div class="meal-title">ABC Juice + Amla</div>
+      <div class="meal-body">
+        Apple + Beetroot + Carrot (your current base — keep it).<br>
+        <strong>Upgrade:</strong> Add 1 tsp amla powder — highest natural Vitamin C, activates collagen synthesis from your morning peptides.
+      </div>
+      <div class="meal-kcal">~130 kcal · <span>Vitamin C Surge</span></div>
+    </div>
+
+    <div class="meal-card">
+      <div class="meal-time">01:00 PM</div>
+      <div class="meal-title">Main Meal — Fuel</div>
+      <div class="meal-body">
+        <strong>3–4 whole eggs</strong> scrambled<br>
+        <strong>Swap oats → </strong>1 medium sweet potato OR 100g brown rice OR 150g lentils<br>
+        <strong>Veggies:</strong> Spinach, broccoli, kale, bell peppers, cucumber, tomato<br>
+        <strong>Add:</strong> 1 tbsp extra virgin olive oil + 1 tbsp curd (probiotic)<br>
+        <strong>Fish oil:</strong> Take with this meal (fat-soluble)
+      </div>
+      <div class="meal-kcal">~580 kcal · <span>~38g Protein</span></div>
+    </div>
+
+    <div class="meal-card">
+      <div class="meal-time">04:30 PM</div>
+      <div class="meal-title">Pre-Workout Fuel</div>
+      <div class="meal-body">
+        1 banana (fast carbs, potassium for muscle) + black coffee.<br>
+        <strong>OR</strong> 3–4 dates + black coffee. Simple, effective — 30–45 min before session.
+      </div>
+      <div class="meal-kcal">~120 kcal · <span>Fast Carbs</span></div>
+    </div>
+
+    <div class="meal-card">
+      <div class="meal-time">05:00 PM</div>
+      <div class="meal-title">Evening Weight Training</div>
+      <div class="meal-body">
+        Compound home movements: push-ups, pull-ups, squats, lunges, dips, rows.<br>
+        <strong>Progressive overload.</strong> Track every session. This is where the athlete is built.
+      </div>
+      <div class="meal-kcal">TRAINING · <span>60 min</span></div>
+    </div>
+
+    <div class="meal-card">
+      <div class="meal-time">06:30 PM</div>
+      <div class="meal-title">Post-Workout Whey</div>
+      <div class="meal-body">
+        <strong>ASITIS Whey</strong> 1 scoop (27g protein) in 250ml water. Take within 30–45 min post-training. Critical anabolic window for muscle protein synthesis.
+      </div>
+      <div class="meal-kcal">~130 kcal · <span>~27g Protein</span></div>
+    </div>
+
+    <div class="meal-card">
+      <div class="meal-time">08:00 PM</div>
+      <div class="meal-title">Gut Healing Dinner</div>
+      <div class="meal-body">
+        <strong>Fruits:</strong> Papaya + pomegranate + kiwi + blueberries<br>
+        <strong>Add:</strong> 1 tbsp Greek yogurt (unsweetened) — probiotic + slow protein<br>
+        <strong>Add:</strong> soaked sabja seeds + 1 tsp honey<br>
+        <strong>Optional:</strong> 2 boiled eggs if protein target is short
+      </div>
+      <div class="meal-kcal">~350 kcal · <span>~18g Protein</span></div>
+    </div>
+
+    <div class="meal-card">
+      <div class="meal-time">09:30 PM</div>
+      <div class="meal-title">Sleep Protocol</div>
+      <div class="meal-body">
+        Warm water + ½ tsp ashwagandha + pinch cinnamon. Take Man Matters supplement as prescribed.<br>
+        <strong>Lights off by 10 PM.</strong> HGH peaks 10PM–2AM — hair follicle repair, skin regeneration, muscle recovery happen here.
+      </div>
+      <div class="meal-kcal">RECOVERY · <span>7–8 hrs</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SUPERFOODS -->
+<section id="superfoods" class="superfoods-section reveal">
+  <div class="section-eyebrow">// 03 — Superfoods to Add</div>
+  <div class="section-title">UPGRADE YOUR<br>ARSENAL</div>
+  <div class="sf-grid">
+
+    <div class="sf-card">
+      <img src="https://images.unsplash.com/photo-1506976785307-8732e854ad03?w=400&q=70" alt="Blueberries" loading="lazy">
+      <div class="sf-overlay">
+        <div class="sf-name">Blueberries</div>
+        <div class="sf-benefit">Highest antioxidant density — cognitive function + skin aging reversal</div>
+        <div class="sf-tags"><span class="sf-tag">Brain</span><span class="sf-tag">Antioxidant</span><span class="sf-tag">Skin</span></div>
+      </div>
+    </div>
+
+    <div class="sf-card">
+      <img src="https://images.unsplash.com/photo-1526318896980-cf78c088247c?w=400&q=70" alt="Pumpkin seeds" loading="lazy">
+      <div class="sf-overlay">
+        <div class="sf-name">Pumpkin Seeds</div>
+        <div class="sf-benefit">Zinc + beta-sitosterol — blocks DHT at scalp, critical for MPB Stage 3</div>
+        <div class="sf-tags"><span class="sf-tag">Hair</span><span class="sf-tag">DHT Block</span><span class="sf-tag">Hormones</span></div>
+      </div>
+    </div>
+
+    <div class="sf-card">
+      <img src="https://images.unsplash.com/photo-1623428187969-5da2dcea5ebf?w=400&q=70" alt="Avocado" loading="lazy">
+      <div class="sf-overlay">
+        <div class="sf-name">Avocado</div>
+        <div class="sf-benefit">Glutathione precursors, Vitamin E, healthy fats — skin elasticity + anti-aging</div>
+        <div class="sf-tags"><span class="sf-tag">Skin</span><span class="sf-tag">Anti-Aging</span></div>
+      </div>
+    </div>
+
+    <div class="sf-card">
+      <img src="https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=400&q=70" alt="Eggs" loading="lazy">
+      <div class="sf-overlay">
+        <div class="sf-name">Whole Eggs</div>
+        <div class="sf-benefit">Biotin, B12, choline — hair follicles, brain function, muscle protein</div>
+        <div class="sf-tags"><span class="sf-tag">Hair</span><span class="sf-tag">Brain</span><span class="sf-tag">Muscle</span></div>
+      </div>
+    </div>
+
+    <div class="sf-card">
+      <img src="https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&q=70" alt="Spinach greens" loading="lazy">
+      <div class="sf-overlay">
+        <div class="sf-name">Spinach / Kale</div>
+        <div class="sf-benefit">Iron, folate, Vitamin K — hair + blood health + cellular anti-aging</div>
+        <div class="sf-tags"><span class="sf-tag">Hair</span><span class="sf-tag">Longevity</span><span class="sf-tag">Iron</span></div>
+      </div>
+    </div>
+
+    <div class="sf-card">
+      <img src="https://images.unsplash.com/photo-1588167056547-c783ed900f76?w=400&q=70" alt="Pomegranate" loading="lazy">
+      <div class="sf-overlay">
+        <div class="sf-name">Pomegranate</div>
+        <div class="sf-benefit">Punicalagin — strongest anti-aging polyphenol known, skin + cardiovascular</div>
+        <div class="sf-tags"><span class="sf-tag">Anti-Aging</span><span class="sf-tag">Skin</span><span class="sf-tag">Heart</span></div>
+      </div>
+    </div>
+
+    <div class="sf-card">
+      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=70" alt="Turmeric" loading="lazy">
+      <div class="sf-overlay">
+        <div class="sf-name">Turmeric + Pepper</div>
+        <div class="sf-benefit">Curcumin — systemic anti-inflammatory, antioxidant, gut lining repair</div>
+        <div class="sf-tags"><span class="sf-tag">Inflammation</span><span class="sf-tag">Gut</span></div>
+      </div>
+    </div>
+
+    <div class="sf-card">
+      <img src="https://images.unsplash.com/photo-1556040220-4096d522378d?w=400&q=70" alt="Lentils" loading="lazy">
+      <div class="sf-overlay">
+        <div class="sf-name">Lentils / Dal</div>
+        <div class="sf-benefit">Plant protein, iron, B vitamins, prebiotic fibre — gut diversity engine</div>
+        <div class="sf-tags"><span class="sf-tag">Gut</span><span class="sf-tag">Hair</span><span class="sf-tag">Protein</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SUPPLEMENT STACK -->
+<section id="stack" class="supp-section reveal">
+  <div class="section-eyebrow">// 04 — Your Supplement Stack</div>
+  <div class="section-title">THE<br>STACK</div>
+  <div class="supp-grid">
+
+    <div class="supp-card">
+      <div class="supp-number">01</div>
+      <div class="supp-name">Whey Protein</div>
+      <div class="supp-dose">ASITIS · 27g/scoop · 2 scoops/day</div>
+      <div class="supp-desc">Foundation of your muscle retention and rebuild. Morning with breakfast + post-workout. 54g of high-quality protein daily from shakes alone.</div>
+      <div class="supp-when">WHEN: <span>7:30 AM + 6:30 PM</span></div>
+    </div>
+
+    <div class="supp-card">
+      <div class="supp-number">02</div>
+      <div class="supp-name">Collagen Peptides</div>
+      <div class="supp-dose">Marine / Hydrolysed · 10g/day</div>
+      <div class="supp-desc">Type I marine collagen for skin elasticity, hair follicle structure, gut lining repair, and joint recovery. Pair with Vitamin C source for synthesis activation. Tasteless — mix into oats or water.</div>
+      <div class="supp-when">WHEN: <span>Morning with breakfast + amla in ABC juice</span></div>
+    </div>
+
+    <div class="supp-card">
+      <div class="supp-number">03</div>
+      <div class="supp-name">Fish Oil (Omega-3)</div>
+      <div class="supp-dose">1–2g EPA+DHA · Daily</div>
+      <div class="supp-desc">Anti-inflammatory systemically — supports scalp health, skin moisture barrier, brain sharpness, joint recovery from running. Check label: total omega-3 ≠ EPA+DHA. Take with biggest meal.</div>
+      <div class="supp-when">WHEN: <span>Lunch — 1:00 PM (with food, fat-soluble)</span></div>
+    </div>
+
+    <div class="supp-card">
+      <div class="supp-number">04</div>
+      <div class="supp-name">Multivitamin</div>
+      <div class="supp-dose">Men's Formula · 1 tab/day</div>
+      <div class="supp-desc">Look for: Biotin 1000mcg+, Zinc, Selenium, D3, B12, Iron. Avoid with coffee — gap 30–45 min. Check preformed Vitamin A (retinol) levels — very high doses worsen hair loss. Wellman is solid choice.</div>
+      <div class="supp-when">WHEN: <span>Breakfast — 7:30 AM (with food)</span></div>
+    </div>
+
+    <div class="supp-card">
+      <div class="supp-number">05</div>
+      <div class="supp-name">Man Matters Rx</div>
+      <div class="supp-dose">As Prescribed · Continue</div>
+      <div class="supp-desc">Your prescribed treatment for MPB Stage 3 handles the DHT pathway medically. This entire food and supplement protocol is designed to complement — not compete — with your treatment. Always the priority.</div>
+      <div class="supp-when">WHEN: <span>As prescribed by your doctor</span></div>
+    </div>
+
+    <div class="supp-card" style="background:rgba(0,0,0,0.4);border-style:dashed;">
+      <div class="supp-number" style="color:rgba(255,255,255,0.08)">06</div>
+      <div class="supp-name">Future: Vitamin D3+K2</div>
+      <div class="supp-dose">When Ready · 2000–4000 IU D3</div>
+      <div class="supp-desc">Most Indians are deficient. Critical for testosterone levels, immunity, bone density, and hair follicle cycling. Add this after your current stack is established and stable. Get bloodwork done first.</div>
+      <div class="supp-when">WHEN: <span>Phase 2 addition after 60 days</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- GUT HEALTH -->
+<div class="gut-section reveal">
+  <div class="gut-content">
+    <div class="section-eyebrow">// 05 — Gut Health Protocol</div>
+    <div class="section-title">BUILD YOUR<br>MICROBIOME</div>
+    <div class="gut-list">
+      <div class="gut-item">
+        <div class="gut-icon">🦠</div>
+        <div>
+          <h4>Probiotic Foods Daily</h4>
+          <p>Curd/yogurt (unsweetened), homemade pickles (no vinegar), idli/dosa batter, fermented foods. These seed your gut with Lactobacillus and Bifidobacterium — your immunity and mood bacteria.</p>
+        </div>
+      </div>
+      <div class="gut-item">
+        <div class="gut-icon">🌿</div>
+        <div>
+          <h4>Prebiotic Foods Daily</h4>
+          <p>Oats (beta-glucan), raw garlic (crush and wait 10 min), onion, green banana, lentils, cooked-then-cooled rice. These FEED your good bacteria — equally critical as probiotics.</p>
+        </div>
+      </div>
+      <div class="gut-item">
+        <div class="gut-icon">🌾</div>
+        <div>
+          <h4>30 Plant Foods / Week</h4>
+          <p>Sounds intimidating — it's not. Oats + 5 veggies + 5 fruits + 3 nuts + 2 seeds + lentils + herbs = 16+ easily. Rotate daily. Gut diversity = immune strength = lower inflammation = better skin and hair.</p>
+        </div>
+      </div>
+      <div class="gut-item">
+        <div class="gut-icon">💧</div>
+        <div>
+          <h4>3–3.5 Litres Water Daily</h4>
+          <p>Gut motility depends on hydration. Add sabja/basil seeds to water — they form a mucilaginous coating that soothes the gut lining. Morning ACV supports stomach acid production.</p>
+        </div>
+      </div>
+      <div class="gut-item">
+        <div class="gut-icon">🚫</div>
+        <div>
+          <h4>Gut Killers — Avoid</h4>
+          <p>Refined sugar, processed foods, alcohol, artificial sweeteners (destroy Lactobacillus). These wipe out microbiome diversity within 48 hours. Your Man Matters meds need a healthy gut to absorb properly too.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="gut-img">
+    <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&q=80" alt="Fresh healthy vegetables" loading="lazy">
+  </div>
+</div>
+
+<!-- SKIN + HAIR + ANTI-AGING -->
+<section class="skin-section reveal">
+  <div class="section-eyebrow">// 06 — Skin · Hair · Anti-Aging</div>
+  <div class="section-title">REVERSE<br>THE CLOCK</div>
+  <div class="skin-grid">
+    <div class="skin-card">
+      <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&q=70" alt="Runner athlete" loading="lazy">
+      <div class="skin-card-content">
+        <div class="skin-card-icon">🏃</div>
+        <h3>Exercise = Anti-Aging</h3>
+        <p>Zone 2 running increases NAD+ levels — same mechanism as expensive NMN supplements. Weight training increases IGF-1 for skin collagen. You're doing both. This is your biological age reset.</p>
+      </div>
+    </div>
+    <div class="skin-card">
+      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=70" alt="Collagen skin nutrition" loading="lazy">
+      <div class="skin-card-content">
+        <div class="skin-card-icon">🧬</div>
+        <h3>Collagen Protocol</h3>
+        <p>Collagen peptides (10g) + Vitamin C (amla, kiwi) = activated collagen synthesis. Skin firmness, elasticity, joint health. Collagen drops 1% per year after 25 — you're ~10% down at 35. Supplement + food = full stack.</p>
+      </div>
+    </div>
+    <div class="skin-card">
+      <img src="https://images.unsplash.com/photo-1531353826977-0941b4779a1c?w=600&q=70" alt="Sleep recovery" loading="lazy">
+      <div class="skin-card-content">
+        <div class="skin-card-icon">🌙</div>
+        <h3>Sleep = Medicine</h3>
+        <p>Between 10PM–2AM, HGH peaks — repairing skin, muscles, hair follicles. Cortisol from poor sleep ages you faster than any diet can reverse. 7–8 hours is non-negotiable. Protect this window like a training session.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5-DAY WEEK PLAN -->
+<section id="week" class="week-section reveal">
+  <div class="section-eyebrow">// 07 — 5-Day Rotation</div>
+  <div class="section-title">THE WEEK<br>PLAN</div>
+
+  <div class="week-tabs">
+    <button class="week-tab active" onclick="showDay('mon',this)">Monday</button>
+    <button class="week-tab" onclick="showDay('tue',this)">Tuesday</button>
+    <button class="week-tab" onclick="showDay('wed',this)">Wednesday</button>
+    <button class="week-tab" onclick="showDay('thu',this)">Thursday</button>
+    <button class="week-tab" onclick="showDay('fri',this)">Friday</button>
+  </div>
+
+  <div class="week-panels">
+    <div class="week-panel active" id="mon">
+      <div class="day-meal">
+        <div class="day-meal-label">Breakfast</div>
+        <h4>Classic Power Bowl</h4>
+        <p>Oats + chia + <strong>walnuts + almonds + pumpkin seeds</strong> + whey + flaxseed + turmeric + collagen peptides</p>
+      </div>
+      <div class="day-meal">
+        <div class="day-meal-label">Lunch</div>
+        <h4>Egg + Sweet Potato</h4>
+        <p><strong>3 eggs scrambled</strong> + roasted sweet potato + spinach + broccoli + curd + olive oil drizzle + fish oil cap</p>
+      </div>
+      <div class="day-meal">
+        <div class="day-meal-label">Dinner</div>
+        <h4>Papaya Pomegranate Bowl</h4>
+        <p>Papaya + pomegranate + kiwi + Greek yogurt + <strong>sabja seeds</strong> + honey</p>
+      </div>
+    </div>
+
+    <div class="week-panel" id="tue">
+      <div class="day-meal">
+        <div class="day-meal-label">Breakfast</div>
+        <h4>Banana Oats Porridge</h4>
+        <p>Oats porridge + soaked chia + <strong>1 banana sliced in</strong> + whey + mixed nuts + collagen peptides stirred in</p>
+      </div>
+      <div class="day-meal">
+        <div class="day-meal-label">Lunch</div>
+        <h4>Spinach Omelette + Rice</h4>
+        <p><strong>4 eggs omelette</strong> (spinach, tomato, onion) + brown rice + raw salad + curd + fish oil cap</p>
+      </div>
+      <div class="day-meal">
+        <div class="day-meal-label">Dinner</div>
+        <h4>Watermelon Berry Mix</h4>
+        <p>Watermelon + <strong>blueberries</strong> + apple + 2 boiled eggs + honey drizzle + Greek yogurt</p>
+      </div>
+    </div>
+
+    <div class="week-panel" id="wed">
+      <div class="day-meal">
+        <div class="day-meal-label">Breakfast</div>
+        <h4>Turmeric Golden Oats</h4>
+        <p>Oats + chia + walnuts + <strong>turmeric + black pepper</strong> + flaxseed + whey + collagen peptides</p>
+      </div>
+      <div class="day-meal">
+        <div class="day-meal-label">Lunch</div>
+        <h4>Egg + Masoor Dal</h4>
+        <p><strong>3 eggs</strong> + 150g masoor dal + steamed kale/cabbage + olive oil + curd + fish oil cap</p>
+      </div>
+      <div class="day-meal">
+        <div class="day-meal-label">Dinner</div>
+        <h4>Mango Seasonal Bowl</h4>
+        <p>Mango / seasonal fruit + Greek yogurt + <strong>pumpkin seeds</strong> + sabja + cinnamon</p>
+      </div>
+    </div>
+
+    <div class="week-panel" id="thu">
+      <div class="day-meal">
+        <div class="day-meal-label">Breakfast</div>
+        <h4>Overnight Oats + Amla</h4>
+        <p><strong>Soaked overnight oats</strong> + chia + almonds + blueberries / amla + whey + collagen peptides</p>
+      </div>
+      <div class="day-meal">
+        <div class="day-meal-label">Lunch</div>
+        <h4>Egg + Tuna Salad</h4>
+        <p><strong>3 eggs + tuna (canned in water)</strong> + large raw salad + sweet potato wedges + fish oil cap</p>
+      </div>
+      <div class="day-meal">
+        <div class="day-meal-label">Dinner</div>
+        <h4>Papaya Kiwi Night Bowl</h4>
+        <p>Papaya + pomegranate + kiwi + <strong>2 boiled eggs</strong> + cinnamon honey yogurt + sabja seeds</p>
+      </div>
+    </div>
+
+    <div class="week-panel" id="fri">
+      <div class="day-meal">
+        <div class="day-meal-label">Breakfast</div>
+        <h4>Full Arsenal Bowl</h4>
+        <p>Oats + chia + <strong>pumpkin seeds + walnuts + flaxseed</strong> + turmeric + whey + collagen peptides</p>
+      </div>
+      <div class="day-meal">
+        <div class="day-meal-label">Lunch</div>
+        <h4>Egg + Paneer Power</h4>
+        <p><strong>3–4 eggs + 100g paneer</strong> + mixed steamed veggies + curd + olive oil + fish oil cap</p>
+      </div>
+      <div class="day-meal">
+        <div class="day-meal-label">Dinner</div>
+        <h4>Avocado Berry Bowl</h4>
+        <p>Berries + banana + <strong>avocado slices</strong> + Greek yogurt + honey + sabja seeds</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WARNING -->
+<div class="warning-section reveal">
+  <div class="warning-icon">!</div>
+  <div class="warning-content">
+    <h3>Important Notes</h3>
+    <ul class="warning-list">
+      <li>Always check new supplements with your Man Matters doctor — especially collagen, fish oil, multivitamin interactions with your prescribed meds</li>
+      <li>Black coffee: have 30 min AFTER meals, not with food — tannins reduce iron and mineral absorption</li>
+      <li>Multivitamin: check preformed Vitamin A (retinol) dose — very high amounts can worsen hair loss in MPB</li>
+      <li>Collagen peptides + Vitamin C timing matters — take ABC juice with amla within 2 hours of collagen for max synthesis</li>
+      <li>This is nutritional guidance, not medical advice — your prescribed treatment remains the primary hair health authority</li>
+      <li>Creatine has mild DHT association in some studies — keeping it off the stack for now is the right call</li>
+    </ul>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">More Than A<br><em>Comeback.</em></div>
+  <p>Consistency beats perfection. Follow the protocol 80% of the time and you will see results within 90 days. The athlete in you never left — he just needs the right fuel.</p>
+  <div class="footer-bottom">Personalized Protocol · Evan · Age 35 · 2026 · "Faster than lifters. Stronger than runners."</div>
+</footer>
+
+<script>
+// Custom cursor
+const cur = document.getElementById('cur');
+const curRing = document.getElementById('curRing');
+let mx=0, my=0, rx=0, ry=0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cur.style.left = mx+'px'; cur.style.top = my+'px';
+});
+
+function animRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) *.12;
+  curRing.style.left = rx+'px'; curRing.style.top = ry+'px';
+  requestAnimationFrame(animRing);
+}
+animRing();
+
+document.querySelectorAll('a,button,.sf-card,.meal-card,.supp-card').forEach(el => {
+  el.addEventListener('mouseenter', () => { cur.style.transform='translate(-50%,-50%) scale(2.5)'; curRing.style.width='60px'; curRing.style.height='60px'; });
+  el.addEventListener('mouseleave', () => { cur.style.transform='translate(-50%,-50%) scale(1)'; curRing.style.width='36px'; curRing.style.height='36px'; });
+});
+
+// Scroll reveal
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+// Macro bars animate on scroll
+const barObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      e.target.querySelectorAll('.bar-inner[data-w]').forEach(bar => {
+        setTimeout(() => { bar.style.width = bar.dataset.w + '%'; }, 200);
+      });
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.calorie-section').forEach(el => barObs.observe(el));
+
+// Week tabs
+function showDay(day, btn) {
+  document.querySelectorAll('.week-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.week-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(day).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
